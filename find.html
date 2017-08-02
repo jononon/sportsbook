@@ -95,6 +95,10 @@
     $("#activelist").html(html);
   }
 
+  function navToGame(gameID) {
+    window.location.href = "game.html?game="+gameID;
+  }
+
   $(document).ready(function() {
     Array.prototype.contains = function(v) {
       for(var i = 0; i < this.length; i++) {
