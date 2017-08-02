@@ -55,19 +55,11 @@
       </div>
     </nav>
     <div class=container>
-      <h2>Basketball</h2>
+      <h2 id=title></h2>
       <div class="panel panel-default">
-        <div class="panel-heading">Live</div>
-        <div class="panel-body">
-          <table class="table table">
-            <thead>
-              <tr><th></th><th></th><th><small>1</small></th><th><small>2</small></th><th><small>3</small></th><th><small>5</small></th><th><small>Final</small></th></tr>
-            </thead>
-            <tbody>
-              <tr><th><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/LosAngeles_Lakers_logo.svg/1000px-LosAngeles_Lakers_logo.svg.png" height="30px"></th><th>LA Lakers</th><td>15</td><td>-</td><td>-</td><td>-</td><th>15</th></tr>
-              <tr><th><img src="https://upload.wikimedia.org/wikipedia/commons/c/c3/LAClippers5.png" height="30px"></th><th>LA Clippers</th><td>14</td><td>-</td><td>-</td><td>-</td><th>14</th></tr>
-            </tbody>
-          </table>
+        <div class="panel-heading">Live Scores</div>
+        <div class="panel-body" id=scores>
+
         </div>
       </div>
       <div class="panel panel-default">
@@ -147,7 +139,8 @@
         'X-Requested-With': 'XMLHttpRequest'
       },
       success: function(json) {
-        $("#bets").html("");
+        $("#title").html(json.description+" <small>"+json.type+"</small>");
+        $("#bets").html(json.markets.length==0?"<h5>No Bets Available, Check Back Soon</h5>":"");
         for (var i = 0; i < json.markets.length; i++) {
           html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4'><h4>"+json.markets[i].description+"</h4><table class='table'><tbody>"
           //if(json.markets[i].columns == "H2Columns" || json.markets[i].columns == "H3Columns") {
@@ -162,6 +155,42 @@
           html += "</tbody></table></div>"
           $("#bets").append(html);
         }
+      },
+      method: "GET",
+      async: false,
+      timeout: 5000,
+    });
+    $.ajax({
+      url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/results/api/v1/scores/' + gameID,
+      dataType: 'json',
+      headers: {
+        "cache-control": "no-cache",
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(json) {
+        var headerRowHtml = "<table class='table'><thead><tr><th></th>";
+        var teamOneHtml = "<tbody><tr>";
+        var teamTwoHtml = "<tr>";
+        if(json.competitors[0].homeOrVisitor == "home") {
+          teamOneHtml += "<th>"+json.competitors[0].name+"</th>";
+          teamTwoHtml += "<th>"+json.competitors[1].name+"</th>";
+        }
+        if(json.competitors[1].homeOrVisitor == "home") {
+          teamOneHtml += "<th>"+json.competitors[1].name+"</th>";
+          teamTwoHtml += "<th>"+json.competitors[0].name+"</th>";
+        }
+        for(var i = 0; i < json.previousPeriodsScore.length; i++) {
+          headerRowHtml+="<th><small>"+(i+1)+"</small></th>";
+          teamOneHtml += "<td>"+json.previousPeriodsScore[i].home+"</td>"
+          teamTwoHtml += "<td>"+json.previousPeriodsScore[i].visitor+"</td>"
+        }
+        headerRowHtml+="<th><small>"+json.clock.periodNumber+"</small></th>";
+        teamOneHtml += "<td>"+json.currentPeriodScore.home+"</td>"
+        teamTwoHtml += "<td>"+json.currentPeriodScore.visitor+"</td>"
+        headerRowHtml+="<th><small></small></th></tr></thead>";
+        teamOneHtml += "<td>"+json.latestScore.home+"</td></tr>"
+        teamTwoHtml += "<td>"+json.latestScore.visitor+"</td></tr><tbody></table>"
+        $("#scores").html(headerRowHtml + teamOneHtml + teamTwoHtml);
       },
       method: "GET",
       async: false,
