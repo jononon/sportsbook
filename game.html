@@ -145,11 +145,11 @@
           html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4'><h4>"+json.markets[i].description+"</h4><table class='table'><tbody>"
           //if(json.markets[i].columns == "H2Columns" || json.markets[i].columns == "H3Columns") {
             for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-              html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.decimal)+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+              html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
             }
           /*}  else if(json.markets[i].columns == "V1Columns") {
             for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-              html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+json.markets[i].outcomes[j].price.decimal+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+              html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+json.markets[i].outcomes[j].price.american+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
             }
             */
           html += "</tbody></table></div>"
