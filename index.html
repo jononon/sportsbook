@@ -61,72 +61,101 @@
           <h3>Play and win with your friends.</h3>
         </div>
       </div>
-      <div class="panel panel-default">
+      <div class="panel panel-default" id=liveGames>
         <div class="panel-heading"><h3 class="panel-title">Live Games</h3></div>
-        <table class="table">
-         <tr>
-           <td rowspan="2" style="vertical-align:middle"><img src="multi-sports/svg/basketball-ball-1.svg" height=20px> Basketball</td>
-           <td rowspan="2" style="vertical-align:middle">Halftime</td>
-           <td style="vertical-align:middle">Lakers</td>
-           <td style="vertical-align:middle">52</td>
-           <td rowspan="2" style="vertical-align:middle"><button class="btn btn-default" type="submit">Bet</button></td>
-         </tr>
-         <tr>
-           <td style="vertical-align:middle">Clippers</td>
-           <td style="vertical-align:middle">47</td>
-         </tr>
-         <tr>
-           <td rowspan="2" style="vertical-align:middle"><img src="multi-sports/svg/soccer-ball.svg" height=20px> Soccer</td>
-           <td rowspan="2" style="vertical-align:middle">3 Mins Remaining</td>
-           <td style="vertical-align:middle">Manchester United</td>
-           <td style="vertical-align:middle">1</td>
-           <td rowspan="2" style="vertical-align:middle"><button class="btn btn-default" type="submit">Bet</button></td>
-         </tr>
-         <tr>
-           <td style="vertical-align:middle">Chelsea</td>
-           <td style="vertical-align:middle">3</td>
-         </tr>
-         <tr>
-           <td rowspan="2" style="vertical-align:middle"><img src="multi-sports/svg/hockey-equipment.svg" height=20px> Hockey</td>
-           <td rowspan="2" style="vertical-align:middle">Golden Goal</td>
-           <td style="vertical-align:middle">LA Kings</td>
-           <td style="vertical-align:middle">5</td>
-           <td rowspan="2" style="vertical-align:middle"><button class="btn btn-default" type="submit">Bet</button></td>
-         </tr>
-         <tr>
-           <td style="vertical-align:middle">New York Rangers</td>
-           <td style="vertical-align:middle">3</td>
-         </tr>
-         <tr>
-           <td rowspan="2" style="vertical-align:middle"><img src="multi-sports/svg/baseball-ball.svg" height=20px> Baseball</td>
-           <td rowspan="2" style="vertical-align:middle">Bottom 8th Inning</td>
-           <td style="vertical-align:middle">LA Dodgers</td>
-           <td style="vertical-align:middle">6</td>
-           <td rowspan="2" style="vertical-align:middle"><button class="btn btn-default" type="submit">Bet</button></td>
-         </tr>
-         <tr>
-           <td style="vertical-align:middle">NY Yankees</td>
-           <td style="vertical-align:middle">6</td>
-         </tr>
-       </table>
-        <div class="panel-footer">Icons made by <a href=http://www.freepik.com/>Freepik</a> from <a href=www.flaticon.com>www.flaticon.com</a></div>
       </div>
     </div>
 </body>
 <script>
   $(document).ready(function() {
+
+    function getImageSource(game) {
+      var output="<img src="
+      switch(game) {
+        case "BASEBALL":
+          output+= "<img src=multi-sports/png/baseball-ball.png";
+        break;
+        case "BASKETBALL":
+          output+= "multi-sports/png/basketball-ball-1.png"
+        break;
+        case "GOLF":
+          output+= "multi-sports/png/golf-ball.png";
+        break;
+        case "HOCKEY":
+          output+= "multi-sports/png/hockey-equipment.png";
+        break;
+        case "SOCCER":
+          output+= "multi-sports/png/soccer-ball-1.png";
+        break;
+        case "TENNIS":
+          output+= "multi-sports/png/tennis-racquet.png";
+        break;
+        case "VOLLEYBALL":
+          output+= "multi-sports/png/volleyball-ball.png";
+        break;
+        case "FOOTBALL":
+          output+= "multi-sports/png/football-annotation.png";
+        break;
+        default:
+          return "";
+        break;
+      }
+      output+=" height=20px> "
+      return output;
+    }
+
     $.ajax({
-      url: 'https://sports.bovada.lv/services/sports/results/api/v1/scores',
-      dataType: 'application/vnd.scoreboards.summary+json',
+      url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/results/api/v1/scores',
+      dataType: 'json',
       // jsonpCallback: "localJsonpCallback",
       headers: {
-        "cache-control": "no-cache"
+        "cache-control": "no-cache",
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(json) {
+        var games = [];
+        var html = "<table class='table'>";
+        for (var i = 0; i < json.length; i++) {
+          if(json[i].gameStatus == "IN_PROGRESS")
+            games.push(json[i]);
+        }
+        for (var i = 0; i < games.length; i++) {
+          console.log(games[i].sport);
+          $.ajax({
+            url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
+            dataType: 'json',
+            // jsonpCallback: "localJsonpCallback",
+            headers: {
+              "cache-control": "no-cache",
+              'X-Requested-With': 'XMLHttpRequest'
+            },
+            success: function(json) {
+              html+="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(json[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json[i].competitors[0].description+"</td>";
+              if(json[i].competitors[0].type=="HOME") {
+                html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td>"
+              } else {
+                html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td>"
+              }
+              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' type='submit'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json[i].competitors[1].description+"</td>";
+              if(json[i].competitors[1].type=="HOME") {
+                html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td></tr>"
+              } else {
+                html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td></tr>"
+              }
+            },
+            method: "GET",
+            async: false,
+            timeout: 5000,
+          });
+        }
+        html+="</table>"
+        $("#liveGames").append(html);
+        console.log(games);
       },
       method: "GET",
       async: false,
       timeout: 5000,
     });
-
     function localJsonpCallback(json) {
       console.log(json)
     }
