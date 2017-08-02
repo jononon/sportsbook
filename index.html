@@ -73,7 +73,7 @@
       var output="<img src="
       switch(game) {
         case "BASEBALL":
-          output+= "<img src=multi-sports/png/baseball-ball.png";
+          output+= "multi-sports/png/baseball-ball.png";
         break;
         case "BASKETBALL":
           output+= "multi-sports/png/basketball-ball-1.png"
@@ -95,6 +95,9 @@
         break;
         case "FOOTBALL":
           output+= "multi-sports/png/football-annotation.png";
+        break;
+        case "CRICKET":
+          output+= "multi-sports/png/criquet.png";
         break;
         default:
           return "";
@@ -120,7 +123,6 @@
             games.push(json[i]);
         }
         for (var i = 0; i < games.length; i++) {
-          console.log(games[i].sport);
           $.ajax({
             url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
             dataType: 'json',
@@ -130,14 +132,14 @@
               'X-Requested-With': 'XMLHttpRequest'
             },
             success: function(json) {
-              html+="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(json[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json[i].competitors[0].description+"</td>";
-              if(json[i].competitors[0].type=="HOME") {
+              html+="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(games[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json.competitors[0].description+"</td>";
+              if(json.competitors[0].type=="HOME") {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td>"
               } else {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td>"
               }
-              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' type='submit'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json[i].competitors[1].description+"</td>";
-              if(json[i].competitors[1].type=="HOME") {
+              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' type='submit'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json.competitors[1].description+"</td>";
+              if(json.competitors[1].type=="HOME") {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td></tr>"
               } else {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td></tr>"
@@ -156,9 +158,6 @@
       async: false,
       timeout: 5000,
     });
-    function localJsonpCallback(json) {
-      console.log(json)
-    }
   });
 </script>
 </html>

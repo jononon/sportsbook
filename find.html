@@ -73,21 +73,74 @@
   </div>
 </body>
 <script>
-  var level = 0;
-  var lvl1 = "<div class='list-group'><button onclick='next()' type='button' class='list-group-item'>LA Lakers vs LA Clippers // July 17, 2017</button><button onclick='next()' type='button' class='list-group-item'>Utah Jazz vs Boston Celtics // July 17, 2017</button><button onclick='next()' type='button' class='list-group-item'>Golden State Warriors vs Philladelphia 76ers // July 18, 2017</button><button onclick='next()' type='button' class='list-group-item'>Huston Rockets vs Cleveland Cavaliers // July 19, 2017</button></div>"
-  var lvl2 = "<div class='list-group'><button onclick='next()' type='button' class='list-group-item'><span class='badge'>3:1</span>Lakers Win</button><button onclick='next()' type='button' class='list-group-item'><span class='badge'>2:1</span>Clippers Win</button><button onclick='next()' type='button' class='list-group-item'><span class='badge'>2:1</span>Lakers Win Tip-Off</button><button onclick='next()' type='button' class='list-group-item'><span class='badge'>2:1</span>Lakers Win Tip-Off</button><button onclick='next()' type='button' class='list-group-item'><span class='badge'>15:1</span>Lakers Win By 20</button><button onclick='next()' type='button' class='list-group-item'><span class='badge'>10:1</span>Clippers Win by 20 </button></div>"
+  var data = {};
+  function showGames (sport){
+    var games = data[sport];
+    html = "<div class='list-group'>";
+    for (var i = 0; i < games.length; i++) {
+      var date = new Date(games[i].startTime);
+      html+="<button onclick='navToGame("+games[i].id+")' type='button' class='list-group-item'>"+games[i].description+" - "+date.toLocaleDateString()+" "+date.toLocaleTimeString()+"</button>";
+    }
+    html+="</div>"
+    $("#activelist").html(html);
+  }
 
-  function next (){
-    level++;
-    if (level==1) {
-      $("#breadcrumb").append("<li><a href='#'>Basketball</a></li>");
-      $("#activelist").html(lvl1);
-    } if (level==2) {
-      $("#breadcrumb").append("<li><a href='#'>LA Lakers vs LA Clippers</a></li>");
-      $("#activelist").html(lvl2);
+  function showSports() {
+    html = "<div class='list-group'>";
+    for (var i = 0; i < data["ELEMENTS"].length; i++) {
+      var sportFormatted = "" + data["ELEMENTS"][i].charAt(0) + data["ELEMENTS"][i].substring(1).toLowerCase();
+      html+="<button onclick='showGames(\""+data["ELEMENTS"][i]+"\")' type='button' class='list-group-item'>"+sportFormatted+"</button>";
+    }
+    html+="</div>"
+    $("#activelist").html(html);
+  }
+
+  $(document).ready(function() {
+    Array.prototype.contains = function(v) {
+      for(var i = 0; i < this.length; i++) {
+          if(this[i] === v) return true;
+      }
+      return false;
+    };
+
+    Array.prototype.unique = function() {
+        var arr = [];
+        for(var i = 0; i < this.length; i++) {
+            if(!arr.contains(this[i])) {
+                arr.push(this[i]);
+            }
+        }
+        return arr;
     }
 
-  }
+    $.ajax({
+      url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/under/A/next',
+      dataType: 'json',
+      // jsonpCallback: "localJsonpCallback",
+      headers: {
+        "cache-control": "no-cache",
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      success: function(a) {
+        var json = a.items;
+        data["ELEMENTS"] = [];
+        for (var i = 0; i < json.length; i++) {
+          if(data[json[i].sport]==undefined) {
+            data[json[i].sport] = [];
+            data["ELEMENTS"].push(json[i].sport);
+          }
+          data[json[i].sport].push(json[i]);
+        }
+        showSports();
+      },
+      method: "GET",
+      async: false,
+      timeout: 5000,
+    });
+    function localJsonpCallback(json) {
+      console.log(json)
+    }
+  });
 
 </script>
 </html>
