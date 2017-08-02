@@ -136,6 +136,9 @@
   var gameID;
   $(document).ready(function () {
     gameID = getParameterByName('game');
+    if(gameID == undefined) {
+      window.location.href = "find.html";
+    }
     $.ajax({
       url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/' + gameID,
       dataType: 'json',
@@ -156,7 +159,6 @@
               html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+json.markets[i].outcomes[j].price.fractional+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
             }
             */
-          }
           html += "</tbody></table></div>"
           $("#bets").append(html);
         }
