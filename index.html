@@ -113,4 +113,23 @@
       </div>
     </div>
 </body>
+<script>
+  $(document).ready(function() {
+    $.ajax({
+      url: 'https://sports.bovada.lv/services/sports/results/api/v1/scores',
+      dataType: 'application/vnd.scoreboards.summary+json',
+      // jsonpCallback: "localJsonpCallback",
+      headers: {
+        "cache-control": "no-cache"
+      },
+      method: "GET",
+      async: false,
+      timeout: 5000,
+    });
+
+    function localJsonpCallback(json) {
+      console.log(json)
+    }
+  });
+</script>
 </html>
