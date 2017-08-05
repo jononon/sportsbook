@@ -20,101 +20,102 @@
 </style>
 <body>
   <nav class="navbar navbar-default">
-      <div class="container">
-        <div class="navbar-header navbar-text-color">
-          <button onclick='next()' type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand brandfont" href="index.html">
-            <div>Sportsbook</div>
-          </a>
-        </div>
-        <div id="navbar" class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">
-            <li><a href="about.html">About</a></li>
-            <li class="dropdown">
-              <a href="sports.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sports<span class="caret"></span></a>
-              <ul class="dropdown-menu">
-                <li><a href="sports.html#basketball">Basketball</a></li>
-                <li><a href="sports.html#football">Football</a></li>
-                <li><a href="sports.html#baseball">Baseball</a></li>
-                <li><a href="sports.html#lacrosse">Lacrosse</a></li>
-                <li><a href="sports.html#volleyball">Volleyball</a></li>
-                <li><a href="sports.html#soccer">Soccer</a></li>
-              </ul>
-            </li>
-          </ul>
-          <ul class="nav navbar-nav navbar-right">
-            <li><a href="login.html" id=signinbtn></a></li>
-            <li><a href="dashboard.html">Go to Dashboard</a></li>
-          </ul>
-        </div><!--/.nav-collapse -->
+    <div class="container">
+      <div class="navbar-header navbar-text-color">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand brandfont" href="index.html">
+          <div>Sportsbook</div>
+        </a>
       </div>
-    </nav>
-    <div class=container>
-      <h2 id=title></h2>
-      <div class="panel panel-default">
-        <div class="panel-heading">Live Scores</div>
-        <div class="panel-body" id=scores>
-          Live Scores Unavailable
-        </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="about.html">About</a></li>
+          <li><a href="about.html">Find a Game</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li id=signinbtn><a href="login.html"></a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class=container>
+    <h2 id=title></h2>
+    <div class="panel panel-default">
+      <div class="panel-heading">Live Scores</div>
+      <div class="panel-body" id=scores>
+        Live Scores Unavailable
       </div>
-      <div class="panel panel-default">
-        <div class="panel-heading">Betting</div>
-        <div class="panel-body" id=bets>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-            <h4>Halftime Result</h4>
-            <table class="table table">
-              <tbody>
-                <tr><td>Lakers Lead First Half</td><td>2:5</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Clippers Lead First Half</td><td>1:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-            <h4>Fulltime Result</h4>
-            <table class="table table">
-              <tbody>
-                <tr><td>Lakers Win</td><td>2:5</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Clippers Win</td><td>1:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-            <h4>Score</h4>
-            <table class="table table">
-              <thead>
-                <tr><td colspan="2"><center>Under</center></td><td>Score</td><td colspan="2"><center>Over</center></td></tr>
-              </thead>
-              <tbody>
-                <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>11:10</td><td>121.5</td><td>25:43</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>20:21</td><td>122.5</td><td>2:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>25:28</td><td>123.5</td><td>20:27</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>10:13</td><td>125</td><td>20:23</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
-            <h4>Even/Odd</h4>
-            <table class="table table">
-              <tbody>
-                <tr><td>Lakers Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Lakers Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Clippers Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Clippers Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Game Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-                <tr><td>Game Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
-              </tbody>
-            </table>
-          </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">Betting</div>
+      <div class="panel-body" id=bets>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+          <h4>Halftime Result</h4>
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr><td>Lakers Lead First Half</td><td>2:5</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Clippers Lead First Half</td><td>1:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+          <h4>Fulltime Result</h4>
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr><td>Lakers Win</td><td>2:5</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Clippers Win</td><td>1:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+          <h4>Score</h4>
+          <table class="table table-hover table-condensed">
+            <thead>
+              <tr><td colspan="2"><center>Under</center></td><td>Score</td><td colspan="2"><center>Over</center></td></tr>
+            </thead>
+            <tbody>
+              <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>11:10</td><td>121.5</td><td>25:43</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>20:21</td><td>122.5</td><td>2:3</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>25:28</td><td>123.5</td><td>20:27</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td><td>10:13</td><td>125</td><td>20:23</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-xs-12 col-sm-12 col-md-6 col-lg-4">
+          <h4>Even/Odd</h4>
+          <table class="table table-hover table-condensed">
+            <tbody>
+              <tr><td>Lakers Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Lakers Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Clippers Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Clippers Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Game Total Odd</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+              <tr><td>Game Total Even</td><td>10:11</td><td><button type="button" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></button></td></tr>
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
   </div>
 </body>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAnqenBn6THnKmZc0NOu5XmqvyQ3MSHiMc",
+    authDomain: "sportsbook-93f6b.firebaseapp.com",
+    databaseURL: "https://sportsbook-93f6b.firebaseio.com",
+    projectId: "sportsbook-93f6b",
+    storageBucket: "sportsbook-93f6b.appspot.com",
+    messagingSenderId: "650946416188"
+  };
+  firebase.initializeApp(config);
+</script>
 <script>
   function getParameterByName(name, url) {
     if (!url) url = window.location.href;
@@ -142,26 +143,57 @@
         $("#title").html(json.description+" <small>"+json.type+"</small>");
         $("#bets").html(json.numMarkets==0?"<h5>No Bets Available, Check Back Soon</h5>":"");
         for (var i = 0; i < json.numMarkets; i++) {
-          html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-4'><h4>"+json.markets[i].description+"</h4><table class='table'><tbody>"
+          html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'><h4>"+json.markets[i].description+"</h4><table class='table table-hover table-condensed'><tbody>"
           if(json.markets[i].columns == "CorrectScore") {
             var winHome = [];
             var draw = [];
             var winAway = [];
-            console.log(json.markets[i].outcomes[0].description);
             for (var j = 0; j < json.markets[i].outcomes.length; j++) {
               if(json.markets[i].outcomes[j].status == "OPEN") {
-                console.log(json.markets[i].outomes[j].description);
-                var score1 =json.markets[i].outomes[j].description.substring(0,json.markets[i].outomes[j].description.indexOf(" "));
-                var score2 = json.markets[i].outomes[j].description.substring(json.markets[i].outomes[j].description.indexOf("-")+2);
+                var score1 =parseInt(json.markets[i].outcomes[j].description.substring(0,json.markets[i].outcomes[j].description.indexOf(" ")));
+                var score2 = parseInt(json.markets[i].outcomes[j].description.substring(json.markets[i].outcomes[j].description.indexOf("-")+2));
 
-                console.log(score1);
-                console.log(score2);
+                if(score1>score2)
+                  winHome.push(json.markets[i].outcomes[j]);
+                else if (score1<score2)
+                  winAway.push(json.markets[i].outcomes[j]);
+                else if (score1==score2)
+                  draw.push(json.markets[i].outcomes[j]);
+                else {
+                  console.log("Error: "+score1+"-"+score2);
+                  for (var j = 0; j < json.markets[i].outcomes.length; j++) {
+                    if(json.markets[i].outcomes[j].status == "OPEN") {
+                      html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+                    }
+                  }
+                  break;
+                }
               }
+            }
+            var max = Math.max(winHome.length, draw.length, winAway.length)
+            for (var j = 0; j < max; j++) {
+              html+="<tr>"
+              if(j<winHome.length) {
+                html+="<td>"+winHome[j].description+"</td><td class=text-right>"+(winHome[j].price==undefined?"":winHome[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+              } else {
+                html+= "<td></td><td></td><td></td>";
+              }
+              if(j<draw.length) {
+                html+="<td>"+draw[j].description+"</td><td class=text-right>"+(draw[j].price==undefined?"":draw[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+              } else {
+                html+= "<td></td><td></td><td></td>";
+              }
+              if(j<winAway.length) {
+                html+="<td>"+winAway[j].description+"</td><td class=text-right>"+(winAway[j].price==undefined?"":winAway[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+              } else {
+                html+= "<td></td><td></td><td></td>";
+              }
+              html+="</tr>";
             }
           } else {
             for (var j = 0; j < json.markets[i].outcomes.length; j++) {
               if(json.markets[i].outcomes[j].status == "OPEN") {
-                html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+                html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td class=text-right>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
               }
             }
           }
@@ -197,23 +229,47 @@
           teamOneHtml += "<th>"+json.competitors[1].name+"</th>";
           teamTwoHtml += "<th>"+json.competitors[0].name+"</th>";
         }
-        for(var i = 0; i < json.previousPeriodsScore.length; i++) {
-          headerRowHtml+="<th><small>"+(i+1)+"</small></th>";
-          teamOneHtml += "<td>"+json.previousPeriodsScore[i].home+"</td>"
-          teamTwoHtml += "<td>"+json.previousPeriodsScore[i].visitor+"</td>"
+        if(json.previousPeriodsScore != undefined) {
+          for(var i = 0; i < json.previousPeriodsScore.length; i++) {
+            headerRowHtml+="<th><small>"+(i+1)+"</small></th>";
+            teamOneHtml += "<td>"+json.previousPeriodsScore[i].home+"</td>"
+            teamTwoHtml += "<td>"+json.previousPeriodsScore[i].visitor+"</td>"
+          }
         }
-        headerRowHtml+="<th><small>"+json.clock.periodNumber+"</small></th>";
-        teamOneHtml += "<td>"+json.currentPeriodScore.home+"</td>"
-        teamTwoHtml += "<td>"+json.currentPeriodScore.visitor+"</td>"
+        if(json.currentPeriodScore != undefined) {
+          headerRowHtml+="<th><small>"+json.clock.periodNumber+"</small></th>";
+          teamOneHtml += "<td>"+json.currentPeriodScore.home+"</td>"
+          teamTwoHtml += "<td>"+json.currentPeriodScore.visitor+"</td>"
+        }
         headerRowHtml+="<th><small></small></th></tr></thead>";
         teamOneHtml += "<td>"+json.latestScore.home+"</td></tr>"
         teamTwoHtml += "<td>"+json.latestScore.visitor+"</td></tr><tbody></table>"
-        $("#scores").html(headerRowHtml + teamOneHtml + teamTwoHtml);
+
+        var time = json.clock.gameTime==null?"":"<div>"+json.clock.gameTime+"</div>";
+
+        $("#scores").html(headerRowHtml + teamOneHtml + teamTwoHtml + time);
       },
       method: "GET",
       async: false,
       timeout: 5000,
     });
+  });
+
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      var uid = user.uid;
+      var providerData = user.providerData;
+      // ...
+      $("#signinbtn").html("<a href='dashboard.html'>Go to Dashboard</a>")
+    } else {
+      $("#signinbtn").html("<a href='login.html'>Log in</a>")
+    }
   });
 </script>
 </html>
