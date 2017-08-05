@@ -99,7 +99,7 @@
           $("#bets").html(json.numMarkets==0?"<h5>No Bets Available, Check Back Soon</h5>":"");
           for (var i = 0; i < json.numMarkets; i++) {
             html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'><h4>"+json.markets[i].description
-            if(json.markets[i].periodType != undefined) {
+            if(json.markets[i].periodType != undefined && json.markets[i].type != "PROP") {
               html += " <small>"+json.markets[i].periodType+"</small>";
             }
             html += "</h4>"+"<table class='table table-hover table-condensed'><tbody>"
