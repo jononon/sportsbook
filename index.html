@@ -140,7 +140,7 @@
               } else {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td>"
               }
-              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' type='submit'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json.competitors[1].description+"</td>";
+              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' onclick='navToGame("+games[i].eventId+")'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json.competitors[1].description+"</td>";
               if(json.competitors[1].type=="HOME") {
                 html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td></tr>"
               } else {
@@ -148,7 +148,7 @@
               }
             },
             method: "GET",
-            async: true,
+            async: false,
             timeout: 5000,
           });
         }
@@ -157,10 +157,14 @@
         console.log(games);
       },
       method: "GET",
-      async: true,
+      async: false,
       timeout: 5000,
     });
   });
+
+  function navToGame(gameID) {
+    window.location.href = "game.html?game="+gameID;
+  }
 
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
