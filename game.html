@@ -132,84 +132,90 @@
     if(gameID == undefined) {
       window.location.href = "find.html";
     }
-    $.ajax({
-      url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/' + gameID,
-      dataType: 'json',
-      headers: {
-        "cache-control": "no-cache",
-        'X-Requested-With': 'XMLHttpRequest'
-      },
-      success: function(json) {
-        $("#title").html(json.description+" <small>"+json.type+"</small>");
-        $("#bets").html(json.numMarkets==0?"<h5>No Bets Available, Check Back Soon</h5>":"");
-        for (var i = 0; i < json.numMarkets; i++) {
-          html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'><h4>"+json.markets[i].description+"</h4><table class='table table-hover table-condensed'><tbody>"
-          if(json.markets[i].columns == "CorrectScore") {
-            var winHome = [];
-            var draw = [];
-            var winAway = [];
-            for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-              if(json.markets[i].outcomes[j].status == "OPEN") {
-                var score1 =parseInt(json.markets[i].outcomes[j].description.substring(0,json.markets[i].outcomes[j].description.indexOf(" ")));
-                var score2 = parseInt(json.markets[i].outcomes[j].description.substring(json.markets[i].outcomes[j].description.indexOf("-")+2));
+    function fetchBets () {
+      $.ajax({
+        url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/' + gameID,
+        dataType: 'json',
+        headers: {
+          "cache-control": "no-cache",
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        success: function(json) {
+          $("#title").html(json.description+" <small>"+json.type+"</small>");
+          $("#bets").html(json.numMarkets==0?"<h5>No Bets Available, Check Back Soon</h5>":"");
+          for (var i = 0; i < json.numMarkets; i++) {
+            html = "<div class='col-xs-12 col-sm-12 col-md-6 col-lg-6'><h4>"+json.markets[i].description+"</h4><table class='table table-hover table-condensed'><tbody>"
+            if(json.markets[i].columns == "CorrectScore") {
+              var winHome = [];
+              var draw = [];
+              var winAway = [];
+              for (var j = 0; j < json.markets[i].outcomes.length; j++) {
+                if(json.markets[i].outcomes[j].status == "OPEN") {
+                  var score1 =parseInt(json.markets[i].outcomes[j].description.substring(0,json.markets[i].outcomes[j].description.indexOf(" ")));
+                  var score2 = parseInt(json.markets[i].outcomes[j].description.substring(json.markets[i].outcomes[j].description.indexOf("-")+2));
 
-                if(score1>score2)
-                  winHome.push(json.markets[i].outcomes[j]);
-                else if (score1<score2)
-                  winAway.push(json.markets[i].outcomes[j]);
-                else if (score1==score2)
-                  draw.push(json.markets[i].outcomes[j]);
-                else {
-                  console.log("Error: "+score1+"-"+score2);
-                  for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-                    if(json.markets[i].outcomes[j].status == "OPEN") {
-                      html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+                  if(score1>score2)
+                    winHome.push(json.markets[i].outcomes[j]);
+                  else if (score1<score2)
+                    winAway.push(json.markets[i].outcomes[j]);
+                  else if (score1==score2)
+                    draw.push(json.markets[i].outcomes[j]);
+                  else {
+                    console.log("Error: "+score1+"-"+score2);
+                    for (var j = 0; j < json.markets[i].outcomes.length; j++) {
+                      if(json.markets[i].outcomes[j].status == "OPEN") {
+                        html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
+                      }
                     }
+                    break;
                   }
-                  break;
+                }
+              }
+              var max = Math.max(winHome.length, draw.length, winAway.length)
+              for (var j = 0; j < max; j++) {
+                html+="<tr>"
+                if(j<winHome.length) {
+                  html+="<td>"+winHome[j].description+"</td><td class=text-right>"+(winHome[j].price==undefined?"":winHome[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+                } else {
+                  html+= "<td></td><td></td><td></td>";
+                }
+                if(j<draw.length) {
+                  html+="<td>"+draw[j].description+"</td><td class=text-right>"+(draw[j].price==undefined?"":draw[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+                } else {
+                  html+= "<td></td><td></td><td></td>";
+                }
+                if(j<winAway.length) {
+                  html+="<td>"+winAway[j].description+"</td><td class=text-right>"+(winAway[j].price==undefined?"":winAway[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
+                } else {
+                  html+= "<td></td><td></td><td></td>";
+                }
+                html+="</tr>";
+              }
+            } else {
+              for (var j = 0; j < json.markets[i].outcomes.length; j++) {
+                if(json.markets[i].outcomes[j].status == "OPEN") {
+                  html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td class=text-right>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
                 }
               }
             }
-            var max = Math.max(winHome.length, draw.length, winAway.length)
-            for (var j = 0; j < max; j++) {
-              html+="<tr>"
-              if(j<winHome.length) {
-                html+="<td>"+winHome[j].description+"</td><td class=text-right>"+(winHome[j].price==undefined?"":winHome[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
-              } else {
-                html+= "<td></td><td></td><td></td>";
+            /*}  else if(json.markets[i].columns == "V1Columns") {
+              for (var j = 0; j < json.markets[i].outcomes.length; j++) {
+                html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+json.markets[i].outcomes[j].price.american+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
               }
-              if(j<draw.length) {
-                html+="<td>"+draw[j].description+"</td><td class=text-right>"+(draw[j].price==undefined?"":draw[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
-              } else {
-                html+= "<td></td><td></td><td></td>";
-              }
-              if(j<winAway.length) {
-                html+="<td>"+winAway[j].description+"</td><td class=text-right>"+(winAway[j].price==undefined?"":winAway[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
-              } else {
-                html+= "<td></td><td></td><td></td>";
-              }
-              html+="</tr>";
-            }
-          } else {
-            for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-              if(json.markets[i].outcomes[j].status == "OPEN") {
-                html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td class=text-right>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
-              }
-            }
+              */
+            html += "</tbody></table></div>"
+            $("#bets").append(html);
           }
-          /*}  else if(json.markets[i].columns == "V1Columns") {
-            for (var j = 0; j < json.markets[i].outcomes.length; j++) {
-              html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+json.markets[i].outcomes[j].price.american+"</td><td><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>"
-            }
-            */
-          html += "</tbody></table></div>"
-          $("#bets").append(html);
-        }
-      },
-      method: "GET",
-      async: false,
-      timeout: 5000,
-    });
+          if(json.LIVE)
+            fetchBets();
+        },
+        method: "GET",
+        async: true,
+        timeout: 5000,
+      });
+    }
+
+    fetchBets();
     $.ajax({
       url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/results/api/v1/scores/' + gameID,
       dataType: 'json',
@@ -250,7 +256,7 @@
         $("#scores").html(headerRowHtml + teamOneHtml + teamTwoHtml + time);
       },
       method: "GET",
-      async: false,
+      async: true,
       timeout: 5000,
     });
   });
