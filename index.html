@@ -110,7 +110,7 @@
     }
 
     $.ajax({
-      url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/results/api/v1/scores',
+      url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/results/api/v1/scores',
       dataType: 'json',
       // jsonpCallback: "localJsonpCallback",
       headers: {
@@ -126,7 +126,7 @@
         }
         for (var i = 0; i < games.length; i++) {
           $.ajax({
-            url: 'https://cors-anywhere.herokuapp.com/'+'https://sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
+            url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
             dataType: 'json',
             // jsonpCallback: "localJsonpCallback",
             headers: {
