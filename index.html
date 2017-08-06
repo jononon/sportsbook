@@ -117,6 +117,11 @@
         "cache-control": "no-cache",
         'X-Requested-With': 'XMLHttpRequest'
       },
+      error: function(a,b,c) {
+        console.log(a);
+        console.log(b);
+        console.log(c);
+      },
       success: function(json) {
         var games = [];
         var html = "<table class='table'>";
