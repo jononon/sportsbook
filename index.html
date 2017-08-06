@@ -113,10 +113,10 @@
       url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/results/api/v1/scores',
       dataType: 'json',
       // jsonpCallback: "localJsonpCallback",
-      headers: {
-        "cache-control": "no-cache",
-        'X-Requested-With': 'XMLHttpRequest'
-      },
+      // headers: {
+      //   "cache-control": "no-cache",
+      //   'X-Requested-With': 'XMLHttpRequest'
+      // },
       error: function(a,b,c) {
         console.log(a);
         console.log(b);
@@ -134,10 +134,10 @@
             url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
             dataType: 'json',
             // jsonpCallback: "localJsonpCallback",
-            headers: {
-              "cache-control": "no-cache",
-              'X-Requested-With': 'XMLHttpRequest'
-            },
+            // headers: {
+            //   "cache-control": "no-cache",
+            //   'X-Requested-With': 'XMLHttpRequest'
+            // },
             success: function(json) {
               html+="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(games[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json.competitors[0].description+"</td>";
               if(json.competitors[0].type=="HOME") {
@@ -162,7 +162,7 @@
         console.log(games);
       },
       method: "GET",
-      async: true,
+      async: false,
       timeout: 5000,
     });
   });
