@@ -227,7 +227,6 @@
           var time = json.clock.gameTime==null?"":"<div>"+json.clock.gameTime+"</div>";
 
           $("#scores").html(headerRowHtml + teamOneHtml + teamTwoHtml + time);
-          console.log(json.lastSignificantKeyEvent)
           if(json.gameStatus == "IN_PROGRESS")
             fetchScores()
         },
@@ -241,7 +240,7 @@
 
   function addToBetSlip(outcomeID, description, optionDescription) {
     var userId = firebase.auth().currentUser.uid;
-    var ref = firebase.database().ref('/users/' + userId + '/betslip')
+    var ref = firebase.database().ref('/users/' + userId + '/betslip');
     ref.once('value').then(function(snapshot) {
       var arr = snapshot.val();
       if(arr == undefined) {
