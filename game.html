@@ -127,7 +127,7 @@
                     console.log("Error: "+score1+"-"+score2);
                     for (var j = 0; j < json.markets[i].outcomes.length; j++) {
                       if(json.markets[i].outcomes[j].status == "OPEN") {
-                        html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true' onclick=addToBetSlip("+json.markets[i].outcomes[j].id+","+json.markets[i].description.split(' ').join('_')+","+json.markets[i].outcomes[j].description.split(' ').join('_')+")></span></button></td></tr>";
+                        html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td>"+(json.markets[i].outcomes[j].price==undefined?"":json.markets[i].outcomes[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip("+json.markets[i].outcomes[j].id+","+json.markets[i].description.split(' ').join('_')+","+json.markets[i].outcomes[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true></span></button></td></tr>";
                       }
                     }
                     break;
@@ -138,17 +138,17 @@
               for (var j = 0; j < max; j++) {
                 html+="<tr>"
                 if(j<winHome.length) {
-                  html+="<td>"+winHome[j].description+"</td><td class=text-right>"+(winHome[j].price==undefined?"":winHome[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true' onclick=addToBetSlip("+winHome[j].id+","+json.markets[i].description.split(' ').join('_')+","+winHome[j].description.split(' ').join('_')+")></span></button></td>";
+                  html+="<td>"+winHome[j].description+"</td><td class=text-right>"+(winHome[j].price==undefined?"":winHome[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip("+winHome[j].id+","+json.markets[i].description.split(' ').join('_')+","+winHome[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
                 } else {
                   html+= "<td></td><td></td><td></td>";
                 }
                 if(j<draw.length) {
-                  html+="<td>"+draw[j].description+"</td><td class=text-right>"+(draw[j].price==undefined?"":draw[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true' onclick=addToBetSlip("+draw[j].id+","+json.markets[i].description.split(' ').join('_')+","+draw[j].description.split(' ').join('_')+")></span></button></td>";
+                  html+="<td>"+draw[j].description+"</td><td class=text-right>"+(draw[j].price==undefined?"":draw[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip("+draw[j].id+","+json.markets[i].description.split(' ').join('_')+","+draw[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
                 } else {
                   html+= "<td></td><td></td><td></td>";
                 }
                 if(j<winAway.length) {
-                  html+="<td>"+winAway[j].description+"</td><td class=text-right>"+(winAway[j].price==undefined?"":winAway[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true' onclick=addToBetSlip("+winAway[j].id+","+json.markets[i].description.split(' ').join('_')+","+winAway[j].description.split(' ').join('_')+")></span></button></td>";
+                  html+="<td>"+winAway[j].description+"</td><td class=text-right>"+(winAway[j].price==undefined?"":winAway[j].price.american)+"</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip("+winAway[j].id+","+json.markets[i].description.split(' ').join('_')+","+winAway[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td>";
                 } else {
                   html+= "<td></td><td></td><td></td>";
                 }
@@ -165,7 +165,7 @@
                       html+=json.markets[i].outcomes[j].price.american;
                     }
                   }
-                  html+="</td><td class=text-right><button type='button' class='btn btn-default btn-sm'><span class='glyphicon glyphicon-plus' aria-hidden='true' onclick=addToBetSlip(\""+json.markets[i].outcomes[j].id+","+json.markets[i].description.split(' ').join('_')+","+json.markets[i].outcomes[j].description.split(' ').join('_')+")></span></button></td></tr>";
+                  html+="</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip(\""+json.markets[i].outcomes[j].id+","+json.markets[i].description.split(' ').join('_')+","+json.markets[i].outcomes[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>";
                 }
               }
             }
