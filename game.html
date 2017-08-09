@@ -61,6 +61,12 @@
       </div>
     </div>
   </div>
+  <div class="panel panel-default" style="position:fixed;bottom:0;right:0;">
+    <div class="panel-heading">Betslip</div>
+    <ul class="list-group" id=betslip>
+      <li class=list-group-item>No Bets</li>
+    </ul>
+  </div>
 </body>
 <script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
 <script>
@@ -165,7 +171,7 @@
                       html+=json.markets[i].outcomes[j].price.american;
                     }
                   }
-                  html+="</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip(\""+json.markets[i].outcomes[j].id+","+json.markets[i].description.split(' ').join('_')+","+json.markets[i].outcomes[j].description.split(' ').join('_')+")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>";
+                  html+="</td><td class=text-right><button type='button' class='btn btn-default btn-sm' onclick=addToBetSlip("+json.markets[i].outcomes[j].id+",\""+json.markets[i].description.split(' ').join('_')+"\",\""+json.markets[i].outcomes[j].description.split(' ').join('_')+"\")><span class='glyphicon glyphicon-plus' aria-hidden='true'></span></button></td></tr>";
                 }
               }
             }
@@ -241,6 +247,9 @@
   function addToBetSlip(outcomeID, description, optionDescription) {
     var userId = firebase.auth().currentUser.uid;
     var ref = firebase.database().ref('/users/' + userId + '/betslip');
+    description = description.split('_').join(' ');
+    optionDescription = optionDescription.split('_').join(' ');
+
     ref.once('value').then(function(snapshot) {
       var arr = snapshot.val();
       if(arr == undefined) {
@@ -248,8 +257,8 @@
       }
       arr.push({
         submitted: outcomeID,
-        description: description.split('_').join(' '),
-        optionDescription: optionDescription.split('_').join(' ')
+        description: description,
+        optionDescription: optionDescription
       });
       ref.set(arr);
     });
@@ -266,9 +275,24 @@
       var uid = user.uid;
       var providerData = user.providerData;
       // ...
-      $("#signinbtn").html("<a href='dashboard.html'>Go to Dashboard</a>")
+      $("#signinbtn").html("<a href='dashboard.html'>Go to Dashboard</a>");
+
+      var betslipRef = firebase.database().ref('/users/' + uid + '/betslip');
+      betslipRef.on('value', function(snapshot) {
+        var arr = snapshot.val();
+        html="";
+        for (var i = 0; i < arr.length; i++) {
+          html+="<li class=list-group-item><div>"+arr[i].description+"</div><div>"+arr[i].optionDescription+"</div>";
+          if(arr[i].bets == undefined) {
+            html+="<div>Confirming Price</div></li>";
+          } else {
+            html+="<div>"+arr[i].bets.bet[0].totalPriceFormattedMap.AMERICAN+"</div></li>";
+          }
+        }
+        $("#betslip").html(html);
+      });
     } else {
-      $("#signinbtn").html("<a href='login.html'>Log in</a>")
+      $("#signinbtn").html("<a href='login.html'>Log in</a>");
     }
   });
 </script>
