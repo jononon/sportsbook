@@ -58,6 +58,7 @@
           <div><img src=images/Ball.gif></div>
         </center>
       </div>
+      <table class='table'><tbody id=liveGamesTable></tbody></table>
     </div>
   </div>
 </body>
@@ -76,6 +77,8 @@
 </script>
 <script>
   $(document).ready(function() {
+
+    var games = [];
 
     function getImageSource(game) {
       var output="<img src="
@@ -133,49 +136,52 @@
         console.log(c);
       },
       success: function(json) {
-        var games = [];
-        var html = "<table class='table'>";
+        $("#loading").hide();
+        $("#liveGamesTable").show();
         for (var i = 0; i < json.length; i++) {
           if(json[i].gameStatus == "IN_PROGRESS")
             games.push(json[i]);
         }
         for (var i = 0; i < games.length; i++) {
-          $.ajax({
-            url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
-            dataType: 'json',
-            // jsonpCallback: "localJsonpCallback",
-            // headers: {
-            //   "cache-control": "no-cache",
-            //   'X-Requested-With': 'XMLHttpRequest'
-            // },
-            success: function(json) {
-              html+="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(games[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json.competitors[0].description+"</td>";
-              if(json.competitors[0].type=="HOME") {
-                html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td>"
-              } else {
-                html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td>"
-              }
-              html+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' onclick='navToGame("+games[i].eventId+")'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json.competitors[1].description+"</td>";
-              if(json.competitors[1].type=="HOME") {
-                html+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td></tr>"
-              } else {
-                html+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td></tr>"
-              }
-            },
-            method: "GET",
-            async: false,
-            timeout: 5000,
-          });
+          addToTable(i);
         }
-        html+="</table>"
-        $("#loading").hide();
-        $("#liveGames").append(html);
         console.log(games);
       },
       method: "GET",
       async: true,
-      timeout: 5000,
+      timeout: 10000,
     });
+
+    async function addToTable(i) {
+      $.ajax({
+        url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
+        dataType: 'json',
+        // jsonpCallback: "localJsonpCallback",
+        // headers: {
+        //   "cache-control": "no-cache",
+        //   'X-Requested-With': 'XMLHttpRequest'
+        // },
+        success: function(json) {
+          tableRowHTML="<tr><td rowspan='2' style='vertical-align:middle'>"+getImageSource(games[i].sport)+games[i].sport+"</td><td rowspan='2' style='vertical-align:middle'>"+games[i].clock.period+"</td><td style='vertical-align:middle'>"+json.competitors[0].description+"</td>";
+          if(json.competitors[0].type=="HOME") {
+            tableRowHTML+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td>"
+          } else {
+            tableRowHTML+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td>"
+          }
+          tableRowHTML+="<td rowspan='2' style='vertical-align:middle'><button class='btn btn-default' onclick='navToGame("+games[i].eventId+")'>Bet</button></td></tr><tr><td style='vertical-align:middle'>"+json.competitors[1].description+"</td>";
+          if(json.competitors[1].type=="HOME") {
+            tableRowHTML+="<td style='vertical-align:middle'>"+games[i].latestScore.home+"</td></tr>"
+          } else {
+            tableRowHTML+="<td style='vertical-align:middle'>"+games[i].latestScore.visitor+"</td></tr>"
+          }
+
+          $('#liveGamesTable').append(tableRowHTML);
+        },
+        method: "GET",
+        async: true,
+        timeout: 5000,
+      });
+    }
   });
 
   function navToGame(gameID) {
