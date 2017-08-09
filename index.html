@@ -52,6 +52,12 @@
     </div>
     <div class="panel panel-default" id=liveGames>
       <div class="panel-heading"><h3 class="panel-title">Live Games</h3></div>
+      <div id=loading class="panel-body">
+        <center>
+          <div>Loading Current Games</div>
+          <div><img src=images/Ball.gif></div>
+        </center>
+      </div>
     </div>
   </div>
 </body>
@@ -110,12 +116,16 @@
     }
 
     $.ajax({
-      url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/results/api/v1/scores',
+      url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/results/api/v1/scores',
+      crossDomain: true,
       dataType: 'json',
       // jsonpCallback: "localJsonpCallback",
       // headers: {
       //   "cache-control": "no-cache",
       //   'X-Requested-With': 'XMLHttpRequest'
+      // },
+      // headers: {
+      //   origin: "test"
       // },
       error: function(a,b,c) {
         console.log(a);
@@ -131,7 +141,7 @@
         }
         for (var i = 0; i < games.length; i++) {
           $.ajax({
-            url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
+            url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/event/events/A/'+games[i].eventId,
             dataType: 'json',
             // jsonpCallback: "localJsonpCallback",
             // headers: {
@@ -158,6 +168,7 @@
           });
         }
         html+="</table>"
+        $("#loading").hide();
         $("#liveGames").append(html);
         console.log(games);
       },

@@ -53,7 +53,12 @@
     </div>
     <div class="panel panel-default">
       <div class="panel-heading">Betting</div>
-      <div class="panel-body" id=bets></div>
+      <div class="panel-body" id=bets>
+        <center>
+          <div>Fetching Bets</div>
+          <div><img src=images/Ball.gif></div>
+        </center>
+      </div>
     </div>
   </div>
 </body>
@@ -88,7 +93,7 @@
     }
     function fetchBets () {
       $.ajax({
-        url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/event/events/A/' + gameID,
+        url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/event/events/A/' + gameID,
         dataType: 'json',
         headers: {
           "cache-control": "no-cache",
@@ -152,7 +157,6 @@
             } else {
               for (var j = 0; j < json.markets[i].outcomes.length; j++) {
                 if(json.markets[i].outcomes[j].status == "OPEN") {
-                  if(json.markets[i].outcomes[j].pric)
                   html += "<tr><td>"+json.markets[i].outcomes[j].description+"</td><td class=text-right>";
                   if(json.markets[i].outcomes[j].price!=undefined) {
                     if(json.markets[i].outcomes[j].price.handicap != undefined) {
@@ -171,7 +175,7 @@
               }
               */
             html += "</tbody></table></div>"
-            $("#bets").append(html);
+            $("#bets").html(html);
           }
           if(json.LIVE)
             fetchBets();
@@ -186,7 +190,7 @@
 
     function fetchScores() {
       $.ajax({
-        url: 'http://66.228.47.239:1337/sports.bovada.lv/services/sports/results/api/v1/scores/' + gameID,
+        url: 'http://66.228.47.239:8080/sports.bovada.lv/services/sports/results/api/v1/scores/' + gameID,
         dataType: 'json',
         headers: {
           "cache-control": "no-cache",
