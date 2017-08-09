@@ -281,19 +281,93 @@
       betslipRef.on('value', function(snapshot) {
         var arr = snapshot.val();
         html="";
-        for (var i = 0; i < arr.length; i++) {
-          html+="<li class=list-group-item><div>"+arr[i].description+"</div><div>"+arr[i].optionDescription+"</div>";
-          if(arr[i].bets == undefined) {
-            html+="<div>Confirming Price</div></li>";
-          } else {
-            html+="<div>"+arr[i].bets.bet[0].totalPriceFormattedMap.AMERICAN+"</div></li>";
+        if(arr != null) {
+          for (var i = 0; i < arr.length; i++) {
+            html+="<li class=list-group-item><div>"+arr[i].description+"</div><div>"+arr[i].optionDescription+"</div>";
+            if(arr[i].bets == undefined) {
+              html+="<div>Confirming Price</div>";
+            } else {
+              html+="<div>"+arr[i].bets.bet[0].totalPriceFormattedMap.AMERICAN+"</div><div class='input-group input-group-sm' id="+arr[i].selections.selection[0].outcomeId+"><input id="+arr[i].selections.selection[0].outcomeId+"-risk type=text class='form-control risk-text-box' placeholder='Risk'></div><div class='input-group input-group-sm'><input id="+arr[i].selections.selection[0].outcomeId+"-reward type=text class=form-control placeholder='Reward' disabled></div><button id="+arr[i].selections.selection[0].outcomeId+"-bet type='button' style=width:50%; class='btn btn-success btn-xs bet-button'>Bet</button><button  id="+arr[i].selections.selection[0].outcomeId+"-cancel type='button' style=width:50%; class='btn btn-danger btn-xs cancel-bet-button'>Cancel</button><div id="+arr[i].selections.selection[0].outcomeId+"-price style=display:none;>"+arr[i].bets.bet[0].price+"</div>";
+
+            }
+            html+="</li>"
           }
+        } else {
+          html="<li>Betlist is Empty</li>"
         }
         $("#betslip").html(html);
+        $(".risk-text-box").on("keyup", function() {
+          var id = $(this).attr('id').split('-')[0];
+          var risk = parseFloat($(this).val());
+          var price = parseFloat($("#"+id+"-price").html());
+          if(risk != NaN || price != NaN) {
+            $('#'+id+"-reward").val(risk*price);
+          } else {
+            $('#'+id+"-reward").val("Please enter a valid integer");
+          }
+        });
+        $(".bet-button").click(function() {
+          var id = $(this).attr('id').split('-')[0];
+          var risk = parseFloat($("#"+id+"-risk").val());
+          var userId = firebase.auth().currentUser.uid;
+          return firebase.database().ref('/users/' + userId + '/betslip').once('value').then(function(snapshot) {
+            var arr = snapshot.val();
+            for (var i = 0; i < arr.length; i++) {
+              if(arr[i].selections!=undefined && risk!=NaN) {
+                if(arr[i].selections.selection[0].outcomeId == id) {
+                  var valueToGo = arr[i];
+                  valueToGo["risk"] = risk;
+                  valueToGo["datePlaced"] = (new Date()).getTime();
+                  var currentBetRef = firebase.database().ref('/users/' + userId + '/currentBets');
+                  currentBetRef.once('value').then(function(snapshot) {
+                    var innerArr = snapshot.val();
+                    if(innerArr == null) {
+                      innerArr = [];
+                    }
+                    innerArr.push(valueToGo);
+                    currentBetRef.set(innerArr);
+                  })
+                  arr.splice(i,1);
+                  firebase.database().ref('/users/' + userId + '/betslip').set(arr);
+                  break;
+                }
+              }
+            }
+          });
+        });
+        $(".cancel-bet-button").click(function() {
+          var id = $(this).attr('id').split('-')[0];
+          var userId = firebase.auth().currentUser.uid;
+          return firebase.database().ref('/users/' + userId + '/betslip').once('value').then(function(snapshot) {
+            var arr = snapshot.val();
+            for (var i = 0; i < arr.length; i++) {
+              if(arr[i].selections!=undefined) {
+                if(arr[i].selections.selection[0].outcomeId == id) {
+                  arr.splice(i,1);
+                  firebase.database().ref('/users/' + userId + '/betslip').set(arr);
+                  break;
+                }
+              }
+            }
+          });
+        });
       });
     } else {
       $("#signinbtn").html("<a href='login.html'>Log in</a>");
     }
+
+    /*function changeRewardTextBox(outcomeId) {
+      $('#'+arr[i].selections.selection[0].outcomeId+"-risk").bind('input', function(e) {
+        var risk = parseInt($('#'+arr[i].selections.selection[0].outcomeId+"-risk").val());
+        var price = parseInt(arr[i].bets.bet[0].price);
+        if(risk != NaN || price != NaN) {
+          $('#'+arr[i].selections.selection[0].outcomeId+"-reward").val(risk*price);
+        } else {
+          $('#'+arr[i].selections.selection[0].outcomeId+"-reward").val("Please enter a valid integer");
+        }
+      });
+    }*/
+
   });
 </script>
 </html>
