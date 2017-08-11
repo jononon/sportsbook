@@ -9,49 +9,30 @@
     <title>Elite Highlights</title>
   </head>
   <body class="animated fadeIn">
-    <nav class="navbar navbar-default navbar-fixed-top">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="index.html">
-              <div>Elite Highlights</div>
-            </a>
-          </div>
-          <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-              <li><a href="about.html">About</a></li>
-              <li><a href="faq.html">FAQ</a></li>
-              <!--<li class="dropdown">
-                <a href="sports.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Sports<span class="caret"></span></a>
-                <ul class="dropdown-menu">
-                  <li><a href="sports.html#basketball">Basketball</a></li>
-                  <li><a href="sports.html#football">Football</a></li>
-                  <li><a href="sports.html#baseball">Baseball</a></li>
-                  <li><a href="sports.html#lacrosse">Lacrosse</a></li>
-                  <li><a href="sports.html#volleyball">Volleyball</a></li>
-                  <li><a href="sports.html#soccer">Soccer</a></li>
-                </ul>
-              </li>
-            -->
-            </ul>
-            <form id=sportsSearchForm class="navbar-form navbar-left" onsubmit="goToSport()" action="">
-              <div class="form-group">
-                <input onkeypress="return goToSport(event,this)" id=sportsSearch type="text" class="form-control" placeholder="Search for a sport">
-              </div>
-              <div id=sportsSearchResults class="panel" style="display: none; position: absolute; ">
-							</div>
-            </form>
-            <ul class="nav navbar-nav navbar-right">
-              <li id=signinbtn></li>
-            </ul>
-          </div><!--/.nav-collapse -->
+    <nav class="navbar navbar-default">
+      <div class="container">
+        <div class="navbar-header navbar-text-color">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand brandfont" href="index.html">
+            <div>Sportsbook</div>
+          </a>
         </div>
-      </nav>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="about.html">About</a></li>
+            <li><a href="about.html">Find a Game</a></li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li id=signinbtn><a href="login.html"></a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
 
     <div class=container-fluid>
       <br>
