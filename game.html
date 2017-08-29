@@ -61,7 +61,7 @@
       </div>
     </div>
   </div>
-  <div class="panel panel-default" style="position:fixed;bottom:0;right:0;">
+  <div class="panel panel-default" style="position:fixed;bottom:0;right:0;width:250px;">
     <div class="panel-heading">Betslip</div>
     <ul class="list-group" id=betslip>
       <li class=list-group-item>No Bets</li>
@@ -188,10 +188,9 @@
         },
         method: "GET",
         async: true,
-        timeout: 5000,
+        timeout: 10000,
       });
     }
-
     fetchBets();
 
     function fetchScores() {
@@ -238,7 +237,7 @@
         },
         method: "GET",
         async: true,
-        timeout: 5000,
+        timeout: 10000,
       });
     }
     fetchScores();
@@ -287,11 +286,12 @@
             if(arr[i].bets == undefined) {
               html+="<div>Confirming Price</div>";
             } else {
-              html+="<div>"+arr[i].bets.bet[0].totalPriceFormattedMap.AMERICAN+"</div><div class='input-group input-group-sm' id="+arr[i].selections.selection[0].outcomeId+"><input id="+arr[i].selections.selection[0].outcomeId+"-risk type=text class='form-control risk-text-box' placeholder='Risk'></div><div class='input-group input-group-sm'><input id="+arr[i].selections.selection[0].outcomeId+"-reward type=text class=form-control placeholder='Reward' disabled></div><button id="+arr[i].selections.selection[0].outcomeId+"-bet type='button' style=width:50%; class='btn btn-success btn-xs bet-button'>Bet</button><button  id="+arr[i].selections.selection[0].outcomeId+"-cancel type='button' style=width:50%; class='btn btn-danger btn-xs cancel-bet-button'>Cancel</button><div id="+arr[i].selections.selection[0].outcomeId+"-price style=display:none;>"+arr[i].bets.bet[0].price+"</div>";
+              html+="<div>"+arr[i].bets.bet[0].totalPriceFormattedMap.AMERICAN+"</div><div><div class='input-group input-group-sm' id="+arr[i].selections.selection[0].outcomeId+"><input style='width:50%;' id="+arr[i].selections.selection[0].outcomeId+"-risk type=text class='form-control risk-text-box' placeholder='Risk''><input style='width:50%;' id="+arr[i].selections.selection[0].outcomeId+"-reward type=text class=form-control placeholder='Win' disabled></div></div><button id="+arr[i].selections.selection[0].outcomeId+"-cancel type='button' style='width:100%;' class='btn btn-default btn-xs cancel-bet-button'>Remove</button><div id="+arr[i].selections.selection[0].outcomeId+"-price style=display:none;>"+arr[i].bets.bet[0].price+"</div>";
 
             }
             html+="</li>"
           }
+          html+="<li class=list-group-item><button id=bet type='button' style='width:100%;' class='btn btn-success btn-xs bet-button'>Bet</button></li>"
         } else {
           html="<li>Betlist is Empty</li>"
         }
@@ -307,32 +307,28 @@
           }
         });
         $(".bet-button").click(function() {
-          var id = $(this).attr('id').split('-')[0];
-          var risk = parseFloat($("#"+id+"-risk").val());
           var userId = firebase.auth().currentUser.uid;
           return firebase.database().ref('/users/' + userId + '/betslip').once('value').then(function(snapshot) {
             var arr = snapshot.val();
+            var bets = [];
             for (var i = 0; i < arr.length; i++) {
+              var risk = parseFloat($("#"+arr[i].selections.selection[0].outcomeId+"-risk").val());
               if(arr[i].selections!=undefined && risk!=NaN) {
-                if(arr[i].selections.selection[0].outcomeId == id) {
-                  var valueToGo = arr[i];
-                  valueToGo["risk"] = risk;
-                  valueToGo["datePlaced"] = (new Date()).getTime();
-                  var currentBetRef = firebase.database().ref('/users/' + userId + '/currentBets');
-                  currentBetRef.once('value').then(function(snapshot) {
-                    var innerArr = snapshot.val();
-                    if(innerArr == null) {
-                      innerArr = [];
-                    }
-                    innerArr.push(valueToGo);
-                    currentBetRef.set(innerArr);
-                  })
-                  arr.splice(i,1);
-                  firebase.database().ref('/users/' + userId + '/betslip').set(arr);
-                  break;
-                }
+                var valueToGo = arr[i];
+                valueToGo["risk"] = risk;
+                valueToGo["datePlaced"] = (new Date()).getTime()
+                bets.push(valueToGo);
               }
             }
+            var currentBetRef = firebase.database().ref('/users/' + userId + '/currentBets');
+            currentBetRef.once('value').then(function(snapshot) {
+              var innerArr = snapshot.val();
+              if(innerArr == null) {
+                innerArr = [];
+              }
+              currentBetRef.set(innerArr.concat(bets));
+            })
+            firebase.database().ref('/users/' + userId + '/betslip').set(null);
           });
         });
         $(".cancel-bet-button").click(function() {
