@@ -262,7 +262,7 @@
       ref.set(arr);
     });
   }
-
+  var uid;
   firebase.auth().onAuthStateChanged(function(user) {
     if (user) {
       // User is signed in.
@@ -271,7 +271,7 @@
       var emailVerified = user.emailVerified;
       var photoURL = user.photoURL;
       var isAnonymous = user.isAnonymous;
-      var uid = user.uid;
+      uid = user.uid;
       var providerData = user.providerData;
       // ...
       $("#signinbtn").html("<a href='dashboard.html'>Go to Dashboard</a>");
@@ -327,7 +327,18 @@
                 innerArr = [];
               }
               currentBetRef.set(innerArr.concat(bets));
-            })
+            });
+            firebase.database().ref('/bets/').once('value').then(function(snapshot) {
+              var arr = snapshot.val();
+              if (arr == undefined) {
+                arr = [];
+              }
+              for (var i = 0; i < bets.length; i++) {
+                bets[i].userID = uid;
+                arr.push(bets[i]);
+              }
+              firebase.database().ref('/bets/').set(arr);
+            });
             firebase.database().ref('/users/' + userId + '/betslip').set(null);
           });
         });

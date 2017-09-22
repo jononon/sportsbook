@@ -1,0 +1,95 @@
+<html lang="en">
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Montserrat+Subrayada|Roboto+Slab|Russo+One" rel="stylesheet">
+  <script src="js/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src=""></script>
+  <script src="bootstrap/js/bootstrap.min.js"></script>
+  <script src="https://use.fontawesome.com/eeee0612d0.js"></script>
+  <link rel="stylesheet" type="text/css" href="static/css/animate.css">
+  <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.min.css">
+</head>
+<style>
+  body {
+    font-family: 'Roboto Slab', serif;
+    /*background-color: rgba(0, 0, 0, 0.71)*/
+  }
+
+  .brandfont {
+    font-family: 'Montserrat Subrayada', sans-serif;
+  }
+</style>
+<body>
+  <nav class="navbar navbar-default">
+    <div class="container">
+      <div class="navbar-header navbar-text-color">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand brandfont" href="index.html">
+          <div>Sportsbook</div>
+        </a>
+      </div>
+      <div id="navbar" class="navbar-collapse collapse">
+        <ul class="nav navbar-nav">
+          <li><a href="about.html">About</a></li>
+          <li><a href="find.html">Find a Game</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li id=signinbtn><a href="login.html"></a></li>
+        </ul>
+      </div><!--/.nav-collapse -->
+    </div>
+  </nav>
+  <div class=container>
+    <h3>Current Payouts</h3>
+    <div class="list-group" id=list>
+    </div>
+  </div>
+</body>
+<script src="https://www.gstatic.com/firebasejs/4.2.0/firebase.js"></script>
+<script>
+  // Initialize Firebase
+  var config = {
+    apiKey: "AIzaSyAnqenBn6THnKmZc0NOu5XmqvyQ3MSHiMc",
+    authDomain: "sportsbook-93f6b.firebaseapp.com",
+    databaseURL: "https://sportsbook-93f6b.firebaseio.com",
+    projectId: "sportsbook-93f6b",
+    storageBucket: "sportsbook-93f6b.appspot.com",
+    messagingSenderId: "650946416188"
+  };
+  firebase.initializeApp(config);
+</script>
+<script>
+  var uid;
+  firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+      // User is signed in.
+      var displayName = user.displayName;
+      var email = user.email;
+      var emailVerified = user.emailVerified;
+      var photoURL = user.photoURL;
+      var isAnonymous = user.isAnonymous;
+      uid = user.uid;
+      var providerData = user.providerData;
+      // ...
+      $("#signinbtn").html("<a href='dashboard.html'>Go to Dashboard</a>");
+    }
+  });
+
+  $(document).ready(function () {
+    var ref = firebase.database().ref("/");
+
+    ref.on('value', function(snapshot) {
+      var arr = snapshot.val();
+      $("#list").html("");
+
+      for (var i = 0; i < arr.bets.length; i++) {
+        $("#list").append("<a href='#' class='list-group-item'><h4 class='list-group-item-heading'>"+arr.users[arr.bets[i].userID].name+"</h4><p class='list-group-item-text'>"+arr.bets[i].description+" - "+arr.bets[i].optionDescription+" - Risk: "+arr.bets[i].risk+", Price: "+arr.bets[i].selections.selection[0].price+"</p></a>");
+      }
+    });
+  });
+</script>
+</html>
