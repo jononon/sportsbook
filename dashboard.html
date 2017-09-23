@@ -87,9 +87,20 @@
       $("#list").html("");
 
       for (var i = 0; i < arr.bets.length; i++) {
-        $("#list").append("<a href='#' class='list-group-item'><h4 class='list-group-item-heading'>"+arr.users[arr.bets[i].userID].name+"</h4><p class='list-group-item-text'>"+arr.bets[i].description+" - "+arr.bets[i].optionDescription+" - Risk: "+arr.bets[i].risk+", Price: "+arr.bets[i].selections.selection[0].price+"</p></a>");
-      }
+          $("#list").append("<a href='#' class='list-group-item'><h4 class='list-group-item-heading'>"+arr.users[arr.bets[i].userID].name+"</h4><p class='list-group-item-text'>"+arr.bets[i].description+" - "+arr.bets[i].optionDescription+" - Risk: "+arr.bets[i].risk+", Price: "+arr.bets[i].selections.selection[0].price+"</p><p><button onclick=finished("+i+") type='button' class='btn btn-default'>Mark as Paid</button></p></a>");
+        }
     });
   });
+
+  function finished(num) {
+    var ref = firebase.database().ref("/bets/");
+    ref.once('value').then(function(snapshot) {
+      var val = snapshot.val();
+      if(val != undefined) {
+        val.splice(num, 1);
+      }
+      ref.set(val);
+    });
+  }
 </script>
 </html>
